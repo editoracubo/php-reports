@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5dd8eccbc6699fee138e5031fa79c285",
+    "content-hash": "adec0b6885cc2e144ecd7b3f2dc61192",
     "packages": [
         {
             "name": "adodb/adodb-php",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ADOdb/ADOdb.git",
-                "reference": "a3410de7c9397046564936e7dc81b7a6143a9e7f"
+                "reference": "33be3dba611bb0beba1cfa62dd644e3bd81c2255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ADOdb/ADOdb/zipball/a3410de7c9397046564936e7dc81b7a6143a9e7f",
-                "reference": "a3410de7c9397046564936e7dc81b7a6143a9e7f",
+                "url": "https://api.github.com/repos/ADOdb/ADOdb/zipball/33be3dba611bb0beba1cfa62dd644e3bd81c2255",
+                "reference": "33be3dba611bb0beba1cfa62dd644e3bd81c2255",
                 "shasum": ""
             },
             "require": {
@@ -58,7 +58,7 @@
                 "library",
                 "php"
             ],
-            "time": "2019-08-23T14:56:54+00:00"
+            "time": "2020-01-30T09:44:16+00:00"
         },
         {
             "name": "google/apiclient",
@@ -254,12 +254,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikecao/flight.git",
-                "reference": "e459a540175369652d3b49da3602bf6d2a6b97d3"
+                "reference": "b3120f8db2ae3b358c1c7a412a92d7aa008a57b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikecao/flight/zipball/e459a540175369652d3b49da3602bf6d2a6b97d3",
-                "reference": "e459a540175369652d3b49da3602bf6d2a6b97d3",
+                "url": "https://api.github.com/repos/mikecao/flight/zipball/b3120f8db2ae3b358c1c7a412a92d7aa008a57b4",
+                "reference": "b3120f8db2ae3b358c1c7a412a92d7aa008a57b4",
                 "shasum": ""
             },
             "require": {
@@ -289,7 +289,7 @@
             ],
             "description": "Flight is a fast, simple, extensible framework for PHP. Flight enables you to quickly and easily build RESTful web applications.",
             "homepage": "http://flightphp.com",
-            "time": "2019-07-28T19:09:05+00:00"
+            "time": "2020-01-23T05:33:11+00:00"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -414,12 +414,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "550ebaac289296ce228a706d0867afc34687e3f4"
+                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/550ebaac289296ce228a706d0867afc34687e3f4",
-                "reference": "550ebaac289296ce228a706d0867afc34687e3f4",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
+                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
                 "shasum": ""
             },
             "require": {
@@ -431,7 +431,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.12-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -464,35 +464,34 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2019-08-06T08:03:45+00:00"
+            "time": "2020-01-13T11:15:53+00:00"
         },
         {
             "name": "twig/twig",
-            "version": "v1.36.0",
+            "version": "v1.44.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "730c9c4471b5152d23061feb02b03382264c8a15"
+                "reference": "b1f009c449e435a0384814e67205d9190a4d050e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/730c9c4471b5152d23061feb02b03382264c8a15",
-                "reference": "730c9c4471b5152d23061feb02b03382264c8a15",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b1f009c449e435a0384814e67205d9190a4d050e",
+                "reference": "b1f009c449e435a0384814e67205d9190a4d050e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
+                "php": ">=7.2.5",
                 "symfony/polyfill-ctype": "^1.8"
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "^2.7",
-                "symfony/phpunit-bridge": "^3.4.19|^4.1.8"
+                "symfony/phpunit-bridge": "^4.4.9|^5.0.9"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.36-dev"
+                    "dev-master": "1.44-dev"
                 }
             },
             "autoload": {
@@ -515,14 +514,13 @@
                     "role": "Lead Developer"
                 },
                 {
+                    "name": "Twig Team",
+                    "role": "Contributors"
+                },
+                {
                     "name": "Armin Ronacher",
                     "email": "armin.ronacher@active-4.com",
                     "role": "Project Founder"
-                },
-                {
-                    "name": "Twig Team",
-                    "homepage": "https://twig.symfony.com/contributors",
-                    "role": "Contributors"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",
@@ -530,7 +528,21 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-12-16T10:34:11+00:00"
+            "support": {
+                "issues": "https://github.com/twigphp/Twig/issues",
+                "source": "https://github.com/twigphp/Twig/tree/v1.44.8"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/twig/twig",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-09-09T17:17:16+00:00"
         }
     ],
     "packages-dev": [],
@@ -548,8 +560,9 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3",
+        "php": ">=7.4",
         "ext-pdo": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
 }
