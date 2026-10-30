@@ -3,6 +3,28 @@ Php Reports
 
 A reporting framework for managing and displaying nice looking, exportable reports from any data source, including SQL and MongoDB.
 
+Submit no ECS (PHP 7.4)
+----------------------
+
+Este fork exige PHP 7.4 ou superior e PDO. O lock preserva as revisões das
+dependências usadas na neo em 30/10/2026, incluindo as alterações locais de
+ADOdb, Flight e polyfill-ctype. A única atualização de versão nessa migração
+é o Twig 1.44.8, que elimina avisos de sintaxe no PHP 7.4 sem trocar a API 1.x.
+O cálculo de desvio padrão converte explicitamente os valores para número,
+preservando o comportamento anterior também nas colunas de texto.
+
+Instalar com `composer install --no-dev --prefer-dist --no-interaction
+--no-plugins --no-scripts` e conferir `composer check-platform-reqs --no-dev`.
+O Submit fixa o commit desta biblioteca e o dos relatórios em
+`docker/ecs/php-reports.lock.json`; o build instala o vendor pelo lock desta
+biblioteca. Configuração de banco, autenticação e cache pertencem à instalação.
+
+O teste integrado está em `editoracubo/submit`,
+`tests/php74/http-reports.py`: usa somente o laboratório isolado em
+`http://127.0.0.1:8075/`, exercita os cinco relatórios e valida exportações,
+estáticos e os perfis autorizados e bloqueados. O runtime validado nesta etapa
+é o PHP 7.4 com o backport de segurança do Submit.
+
 Major features include:
 
 *   Display a report from any data source that can output tabular data (SQL, MongoDB, PHP, etc.)
