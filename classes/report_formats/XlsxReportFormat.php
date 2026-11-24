@@ -14,7 +14,7 @@ class XlsxReportFormat extends XlsReportBase {
 
 		$objPHPExcel = parent::getExcelRepresantation($report);
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($objPHPExcel);
 		
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="'.$file_name.'.xlsx"');

@@ -11,17 +11,17 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": "^8.5",
         "ext-pdo": "*",
-        "twig/twig": "1.44.8",
-        "swiftmailer/swiftmailer": "5.*",
-        "mikecao/flight": "dev-master",
+        "twig/twig": "^3.0",
+        "symfony/mailer": "^7.4",
+        "flightphp/core": "^3",
         "jdorn/sql-formatter": "dev-master",
         "jdorn/file-system-cache": "dev-master",
-        "phpoffice/phpexcel": "dev-develop",
-        "adodb/adodb-php": "dev-master",
+        "adodb/adodb-php": "^5.22",
         "lespoilus/spyc": "dev-master",
-        "google/apiclient": "1.0.*@beta"
+        "google/apiclient": "^2.18",
+        "phpoffice/phpspreadsheet": "^5"
     },
     "autoload": {
         "files": [
@@ -31,5 +31,6 @@
             "vendor/jdorn/file-system-cache/"
         ]
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

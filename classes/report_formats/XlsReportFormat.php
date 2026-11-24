@@ -14,7 +14,7 @@ class XlsReportFormat extends XlsReportBase {
 
 		$objPHPExcel = parent::getExcelRepresantation($report);
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		$objWriter = new \PhpOffice\PhpSpreadsheet\Writer\Xls($objPHPExcel);
 		
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment;filename="'.$file_name.'.xls"');

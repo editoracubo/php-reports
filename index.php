@@ -19,14 +19,14 @@ header("Access-Control-Allow-Origin: *");
 
 // Google Analytics API
 if(isset(PhpReports::$config['ga_api'])) {
-  $ga_client = new Google_Client();
+  $ga_client = new \Google\Client();
   $ga_client->setApplicationName(PhpReports::$config['ga_api']['applicationName']);
   $ga_client->setClientId(PhpReports::$config['ga_api']['clientId']);
   $ga_client->setAccessType('offline');
   $ga_client->setClientSecret(PhpReports::$config['ga_api']['clientSecret']);
   $ga_client->setRedirectUri(PhpReports::$config['ga_api']['redirectUri']);
-  $ga_service = new Google_Service_Analytics($ga_client);
-  $ga_client->addScope(Google_Service_Analytics::ANALYTICS);
+  $ga_service = new \Google\Service\Analytics($ga_client);
+  $ga_client->addScope(\Google\Service\Analytics::ANALYTICS);
   if(isset($_GET['code'])) {
     $ga_client->authenticate($_GET['code']);
     $_SESSION['ga_token'] = $ga_client->getAccessToken();
