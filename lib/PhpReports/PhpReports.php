@@ -49,13 +49,10 @@ class PhpReports {
 		$template_dirs = array(self::$base_path . '/' .  'templates/default', self::$base_path . '/' .  'templates');
 		if(file_exists(self::$base_path . '/' .  'templates/local')) array_unshift($template_dirs, self::$base_path . '/' .  'templates/local');
 
-		$loader = new Twig_Loader_Chain(array(
-			new Twig_Loader_Filesystem($template_dirs),
-			new Twig_Loader_String()
-		));
-		self::$twig = new Twig_Environment($loader);
-		self::$twig->addFunction(new Twig_SimpleFunction('dbdate', 'PhpReports::dbdate'));
-		self::$twig->addFunction(new Twig_SimpleFunction('sqlin', 'PhpReports::generateSqlIN'));
+		$loader = new \Twig\Loader\FilesystemLoader($template_dirs);
+		self::$twig = new \Twig\Environment($loader);
+		self::$twig->addFunction(new \Twig\TwigFunction('dbdate', 'PhpReports::dbdate'));
+		self::$twig->addFunction(new \Twig\TwigFunction('sqlin', 'PhpReports::generateSqlIN'));
 
 		if(isset($_COOKIE['reports-theme']) && $_COOKIE['reports-theme']) {
 			$theme = $_COOKIE['reports-theme'];
@@ -66,10 +63,10 @@ class PhpReports {
 		self::$twig->addGlobal('theme', $theme);
 		self::$twig->addGlobal('path', $path);
 
-		self::$twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
+		self::$twig->addFilter(new \Twig\TwigFilter('var_dump', 'var_dump'));
 
-		self::$twig_string = new Twig_Environment(new Twig_Loader_String(), array('autoescape'=>false));
-		self::$twig_string->addFunction(new Twig_SimpleFunction('sqlin', 'PhpReports::generateSqlIN'));
+		self::$twig_string = new \Twig\Environment(new \Twig\Loader\ArrayLoader(), array('autoescape'=>false));
+		self::$twig_string->addFunction(new \Twig\TwigFunction('sqlin', 'PhpReports::generateSqlIN'));
 
 		FileSystemCache::$cacheDir = self::$config['cacheDir'];
 
@@ -171,11 +168,14 @@ class PhpReports {
 
 		//if a template path like 'html/report' is given, add the twig file extension
 		if(preg_match('/^[a-zA-Z_\-0-9\/]+$/',$template)) $template .= '.twig';
-		return self::$twig->render($template,$macros);
+		if (self::$twig->getLoader()->exists($template)) {
+			return self::$twig->render($template, $macros);
+		}
+		return self::$twig->createTemplate($template)->render($macros);
 	}
 
 	public static function renderString($template, $macros) {
-			return self::$twig_string->render($template,$macros);
+			return self::$twig_string->createTemplate($template)->render($macros);
 	}
 
 	public static function displayReport($report,$type) {
@@ -462,9 +462,9 @@ class PhpReports {
 			}
 		}
 
-		usort($return,function(&$a,&$b) {
-			if($a['is_dir'] && !$b['is_dir']) return 1;
-			elseif($b['is_dir'] && !$a['is_dir']) return -1;
+		usort($return,function($a,$b) {
+			if(!empty($a['is_dir']) && empty($b['is_dir'])) return 1;
+			elseif(!empty($b['is_dir']) && empty($a['is_dir'])) return -1;
 
 			if(empty($a['Title']) && empty($b['Title'])) return strcmp($a['Name'],$b['Name']);
 			elseif(empty($a['Title'])) return 1;
@@ -514,32 +514,15 @@ class PhpReports {
 		$email_text = $body."\n\n".$text."\n\nView the report online at $link";
 		$email_html = "<p>$body</p>$table<p>View the report online at <a href=\"".htmlentities($link)."\">".htmlentities($link)."</a></p>";
 
-		// Create the message
-		$message = Swift_Message::newInstance()
-		  ->setSubject($subject)
-		  ->setFrom($from)
-		  ->setTo($email)
-		  //text body
-		  ->setBody($email_text)
-		  //html body
-		  ->addPart($email_html, 'text/html')
-		;
-
-		$attachment = Swift_Attachment::newInstance()
-			->setFilename('report.csv')
-			->setContentType('text/csv')
-			->setBody($csv)
-		;
-
-		$message->attach($attachment);
-
-		// Create the Transport
-		$transport = self::getMailTransport();
-		$mailer = Swift_Mailer::newInstance($transport);
-
 		try {
-			// Send the message
-			$result = $mailer->send($message);
+			$message = (new \Symfony\Component\Mime\Email())
+				->subject($subject)
+				->from(...(array) $from)
+				->to(...(array) $email)
+				->text($email_text)
+				->html($email_html)
+				->attach($csv, 'report.csv', 'text/csv');
+			$result = self::getMailTransport()->send($message);
 		}
 		catch(Exception $e) {
 			echo json_encode(array(
@@ -567,31 +550,23 @@ class PhpReports {
 		if(!isset(PhpReports::$config['mail_settings'])) PhpReports::$config['mail_settings'] = array();
 		if(!isset(PhpReports::$config['mail_settings']['method'])) PhpReports::$config['mail_settings']['method'] = 'mail';
 
-		switch(PhpReports::$config['mail_settings']['method']) {
+		$settings = PhpReports::$config['mail_settings'];
+		switch ($settings['method']) {
 			case 'mail':
-				return Swift_MailTransport::newInstance();
+				return \Symfony\Component\Mailer\Transport::fromDsn('native://default');
 			case 'sendmail':
-				return Swift_MailTransport::newInstance(
-					isset(PhpReports::$config['mail_settings']['command'])? PhpReports::$config['mail_settings']['command'] : '/usr/sbin/sendmail -bs'
+				return new \Symfony\Component\Mailer\Transport\SendmailTransport(
+					$settings['command'] ?? '/usr/sbin/sendmail -bs'
 				);
 			case 'smtp':
-				if(!isset(PhpReports::$config['mail_settings']['server'])) throw new Exception("SMTP server must be configured");
-				$transport = Swift_SmtpTransport::newInstance(
-					PhpReports::$config['mail_settings']['server'],
-					isset(PhpReports::$config['mail_settings']['port'])? PhpReports::$config['mail_settings']['port'] : 25
+				if (empty($settings['server'])) throw new Exception("SMTP server must be configured");
+				$encryption = $settings['encryption'] ?? '';
+				$transport = new \Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport(
+					$settings['server'], (int) ($settings['port'] ?? 25), $encryption === 'ssl'
 				);
-
-				//if username/password
-				if(isset(PhpReports::$config['mail_settings']['username'])) {
-					$transport->setUsername(PhpReports::$config['mail_settings']['username']);
-					$transport->setPassword(PhpReports::$config['mail_settings']['password']);
-				}
-
-				//if using encryption
-				if(isset(PhpReports::$config['mail_settings']['encryption'])) {
-					$transport->setEncryption(PhpReports::$config['mail_settings']['encryption']);
-				}
-
+				$transport->setRequireTls($encryption === 'tls');
+				if (isset($settings['username'])) $transport->setUsername($settings['username']);
+				if (isset($settings['password'])) $transport->setPassword($settings['password']);
 				return $transport;
 			default:
 				throw new Exception("Mail method must be either 'mail', 'sendmail', or 'smtp'");

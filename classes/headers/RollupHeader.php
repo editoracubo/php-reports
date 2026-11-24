@@ -76,7 +76,9 @@ class RollupHeader extends HeaderBase {
 				$real_values = array_filter($params['values'],function($a) {if($a === null || $a==='') return false; return true; });
 				sort($real_values);
 				
-				$params['sum'] = array_sum($real_values);
+				$params['sum'] = array_sum(array_map(static function ($value) {
+					return is_string($value) ? (float) $value : $value;
+				}, $real_values));
 				$params['count'] = count($real_values);
 				if($params['count']) {
 					$params['mean'] = $params['average'] = $params['sum'] / $params['count'];
